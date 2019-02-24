@@ -1,51 +1,82 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import javax.swing.*;
 import javax.swing.table.*;
 
 /**
  * Labwork 1 for discipline "Designing programs in intelligent systems".
  *
- * @version 1.0 
+ * @version 1.1
  * @author Artyom Gurbovich
  */
 public class Lab1 {
     static final int TEXT_FIELD_SIZE = 20;
     static final int VERTICAL_STRUT_SIZE = 5;
+    static final String[] NUMBERS_FOR_RADIOBUTTONS = {"1", "2", "3"};
+    static final String[] NUMBERS_FOR_CHECKBUTTONS = {"1", "2", "3"};
+    static final String[] TABLE_HEADER = {"First", "Second"};
+    static final ImageIcon DEFAULT_IMAGE = new ImageIcon("redHeart.jpg");
+    static final ImageIcon ROLLOVER_IMAGE = new ImageIcon("greenHeart.jpg");
     
-    public static JPanel createPanel(String name) {
+    public JPanel createPanel(String name) {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder(name));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         return panel;
     }
 
-    public static JTextField createTextField() {
+    public JTextField createTextField() {
         JTextField textField = new JTextField();
         textField.setColumns(TEXT_FIELD_SIZE);
         return textField;
     }
 
-    public static JTable createEmptyTable(int columnCount) {
-        JTable table = new JTable(0, columnCount);
+    public JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.setHorizontalTextPosition(JButton.CENTER);
+        button.setVerticalTextPosition(JButton.CENTER);
+        button.setIcon(DEFAULT_IMAGE);
+        button.setRolloverIcon(ROLLOVER_IMAGE);
+        button.setPressedIcon(ROLLOVER_IMAGE);
+        button.setForeground(Color.white);
+        return button;
+    }
+
+    public JTable createEmptyTable(String[] header) {
+        JTable table = new JTable(0, header.length);
+        for (int i = 0; i < header.length; i++) {
+            table.getTableHeader().getColumnModel().getColumn(i).setHeaderValue(header[i]);
+        }
         // Only one row can be selected at one time
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return table;
     }
 
-    public static void displayErrorMessage(String errorText) {
+    public void displayErrorMessage(String errorText) {
         JOptionPane.showMessageDialog(new JFrame(), errorText, "Error",
                                       JOptionPane.ERROR_MESSAGE);
     }
 
-    public static void addVerticalStrut(JPanel panel) {
+    public void addVerticalStrut(JPanel panel) {
         panel.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }
 
-    private static JPanel createFirstPanel() {
+    public void moveColumn(JTable table, DefaultTableModel model, int initPosition) {
+        if (model.getRowCount() > 0) {
+            int rowIndex = table.getSelectedRow();
+            String value = (String) model.getValueAt(rowIndex, initPosition);
+            if (!value.equals("")) {
+                table.setValueAt(value, rowIndex, 1 - initPosition);
+                table.setValueAt("", rowIndex, initPosition);
+            }
+        }
+    }
+
+    public JPanel createFirstPanel() {
         JPanel firstPanel = createPanel("First panel");
         JTextField textField = createTextField();
-        JButton addToComboBoxButton = new JButton("Add to combo box");
+        JButton addToComboBoxButton = createButton("Add to combo box");
         JComboBox<String> comboBox = new JComboBox<String>();
 
         addToComboBoxButton.addActionListener(new ActionListener() {
@@ -77,11 +108,11 @@ public class Lab1 {
         return firstPanel;
     }
 
-    private static JPanel createSecondPanel() {
+    public JPanel createSecondPanel() {
         JPanel secondPanel = createPanel("Second panel");
         JTextField textField = createTextField();
-        JButton renameButton = new JButton("Rename bottom button");
-        JButton swapButton = new JButton("Swap buttons text");
+        JButton renameButton = createButton("Rename bottom button");
+        JButton swapButton = createButton("Swap buttons text");
 
         renameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -107,14 +138,14 @@ public class Lab1 {
         return secondPanel;
     }
 
-    private static JPanel createThirdPanel() {
+    public JPanel createThirdPanel() {
         JPanel thirdPanel = createPanel("Third panel");
         JTextField textField = createTextField();
-        JButton selectButton = new JButton("Select by name");
+        JButton selectButton = createButton("Select radio button by name");
         ButtonGroup buttonGroup = new ButtonGroup();
-        JRadioButton firstRadioButton = new JRadioButton("First", true);
-        JRadioButton secondRadioButton = new JRadioButton("Second", false);
-        JRadioButton thirdRadioButton = new JRadioButton("Third", false);
+        JRadioButton firstRadioButton = new JRadioButton(NUMBERS_FOR_RADIOBUTTONS[0], true);
+        JRadioButton secondRadioButton = new JRadioButton(NUMBERS_FOR_RADIOBUTTONS[1], false);
+        JRadioButton thirdRadioButton = new JRadioButton(NUMBERS_FOR_RADIOBUTTONS[2], false);
 
         buttonGroup.add(firstRadioButton);
         buttonGroup.add(secondRadioButton);
@@ -123,13 +154,13 @@ public class Lab1 {
         selectButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String currentText = textField.getText();
-                if (currentText.equals("First")) {
+                if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[0])) {
                     firstRadioButton.setSelected(true);
                 }
-                else if (currentText.equals("Second")) {
+                else if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[1])) {
                     secondRadioButton.setSelected(true);
                 }
-                else if (currentText.equals("Third")) {
+                else if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[2])) {
                     thirdRadioButton.setSelected(true);
                 }
                 else {
@@ -152,25 +183,25 @@ public class Lab1 {
         return thirdPanel;
     }
 
-    private static JPanel createFourthPanel() {
+    public JPanel createFourthPanel() {
         JPanel fourthPanel = createPanel("Fourth panel");
         JTextField textField = createTextField();
-        JButton selectButton = new JButton("Select by name");
-        JCheckBox firstCheckBox = new JCheckBox("First");
-        JCheckBox secondCheckBox = new JCheckBox("Second");
-        JCheckBox thirdCheckBox = new JCheckBox("Third");
+        JButton selectButton = createButton("Select check box by name");
+        JCheckBox firstCheckBox = new JCheckBox(NUMBERS_FOR_CHECKBUTTONS[0]);
+        JCheckBox secondCheckBox = new JCheckBox(NUMBERS_FOR_CHECKBUTTONS[1]);
+        JCheckBox thirdCheckBox = new JCheckBox(NUMBERS_FOR_CHECKBUTTONS[2]);
 
         selectButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String currentText = textField.getText();
-                if (currentText.equals("First")) {
-                    firstCheckBox.setSelected(true);
+                if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[0])) {
+                    firstCheckBox.setSelected(!firstCheckBox.isSelected());
                 }
-                else if (currentText.equals("Second")) {
-                    secondCheckBox.setSelected(true);
+                else if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[1])) {
+                    secondCheckBox.setSelected(!secondCheckBox.isSelected());
                 }
-                else if (currentText.equals("Third")) {
-                    thirdCheckBox.setSelected(true);
+                else if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[2])) {
+                    thirdCheckBox.setSelected(!thirdCheckBox.isSelected());
                 }
                 else {
                     displayErrorMessage("Wrong check box name!");
@@ -192,13 +223,13 @@ public class Lab1 {
         return fourthPanel;
     }
 
-    private static JPanel createFifthPanel(JFrame frame) {
+    public JPanel createFifthPanel() {
         JPanel fifthPanel = createPanel("Fifth panel");
         JTextField textField = createTextField();
-        JButton addButton = new JButton("Add to first column");
-        JButton moveFirstButton = new JButton("Move first column to second");
-        JButton moveSecondButton = new JButton("Move second column to first");
-        JTable table = createEmptyTable(2);
+        JButton addButton = createButton("Add to first column");
+        JButton moveFirstButton = createButton("Move first column to second");
+        JButton moveSecondButton = createButton("Move second column to first");
+        JTable table = createEmptyTable(TABLE_HEADER);
         // Convert TableModel to DefaultTableModel
         DefaultTableModel model = (DefaultTableModel) table.getModel();
 
@@ -210,30 +241,18 @@ public class Lab1 {
                     // Select first row
                     table.setRowSelectionInterval(0, 0);
                 }
-                // Rewrite frame for new row
-                frame.pack();
             }
         });
 
         moveFirstButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (model.getRowCount() > 0) {
-                    int rowIndex = table.getSelectedRow();
-                    table.setValueAt(model.getValueAt(rowIndex, 0),
-                                     rowIndex, 1);
-                    table.setValueAt("", rowIndex, 0);
-                }
+                moveColumn(table, model, 0);
             }
         });
 
         moveSecondButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (model.getRowCount() > 0) {
-                    int rowIndex = table.getSelectedRow();
-                    table.setValueAt(model.getValueAt(rowIndex, 1),
-                                     rowIndex, 0);
-                    table.setValueAt("", rowIndex, 1);
-                }
+                moveColumn(table, model, 1);
             }
         });
 
@@ -246,23 +265,24 @@ public class Lab1 {
         addVerticalStrut(fifthPanel);
         fifthPanel.add(moveSecondButton);
         addVerticalStrut(fifthPanel);
-        fifthPanel.add(table);
+        fifthPanel.add(new JScrollPane(table));
         addVerticalStrut(fifthPanel);
         return fifthPanel;
     }
 
     public static void main(String[] args) {
+        Lab1 lab1 = new Lab1();
         JFrame frame = new JFrame("Lab1");
-        JPanel mainPanel = createPanel("Group box");
+        JPanel mainPanel = lab1.createPanel("Group box");
 
         // Exit program when window will be closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(mainPanel);
-        mainPanel.add(createFirstPanel());
-        mainPanel.add(createSecondPanel());
-        mainPanel.add(createThirdPanel());
-        mainPanel.add(createFourthPanel());
-        mainPanel.add(createFifthPanel(frame));
+        mainPanel.add(lab1.createFirstPanel());
+        mainPanel.add(lab1.createSecondPanel());
+        mainPanel.add(lab1.createThirdPanel());
+        mainPanel.add(lab1.createFourthPanel());
+        mainPanel.add(lab1.createFifthPanel());
         frame.pack();
         frame.setVisible(true);
     }
