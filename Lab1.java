@@ -7,17 +7,23 @@ import javax.swing.table.*;
 /**
  * Labwork 1 for discipline "Designing programs in intelligent systems".
  *
- * @version 1.1
+ * @version 1.2
  * @author Artyom Gurbovich
  */
 public class Lab1 {
-    static final int TEXT_FIELD_SIZE = 20;
-    static final int VERTICAL_STRUT_SIZE = 5;
-    static final String[] NUMBERS_FOR_RADIOBUTTONS = {"1", "2", "3"};
-    static final String[] NUMBERS_FOR_CHECKBUTTONS = {"1", "2", "3"};
-    static final String[] TABLE_HEADER = {"First", "Second"};
-    static final ImageIcon DEFAULT_IMAGE = new ImageIcon("redHeart.jpg");
-    static final ImageIcon ROLLOVER_IMAGE = new ImageIcon("greenHeart.jpg");
+    private final int TEXT_FIELD_SIZE = 20;
+
+    private final int VERTICAL_STRUT_SIZE = 5;
+
+    private final String[] NUMBERS_FOR_RADIOBUTTONS = {"1", "2", "3"};
+
+    private final String[] NUMBERS_FOR_CHECKBUTTONS = {"1", "2", "3"};
+
+    private final String[] TABLE_HEADER = {"First", "Second"};
+
+    private final ImageIcon DEFAULT_IMAGE = new ImageIcon("redHeart.jpg");
+
+    private final ImageIcon ROLLOVER_IMAGE = new ImageIcon("greenHeart.jpg");
     
     public JPanel createPanel(String name) {
         JPanel panel = new JPanel();
@@ -156,14 +162,11 @@ public class Lab1 {
                 String currentText = textField.getText();
                 if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[0])) {
                     firstRadioButton.setSelected(true);
-                }
-                else if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[1])) {
+                } else if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[1])) {
                     secondRadioButton.setSelected(true);
-                }
-                else if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[2])) {
+                } else if (currentText.equals(NUMBERS_FOR_RADIOBUTTONS[2])) {
                     thirdRadioButton.setSelected(true);
-                }
-                else {
+                } else {
                     displayErrorMessage("Wrong radio button name!");
                 }
             }
@@ -196,14 +199,11 @@ public class Lab1 {
                 String currentText = textField.getText();
                 if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[0])) {
                     firstCheckBox.setSelected(!firstCheckBox.isSelected());
-                }
-                else if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[1])) {
+                } else if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[1])) {
                     secondCheckBox.setSelected(!secondCheckBox.isSelected());
-                }
-                else if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[2])) {
+                } else if (currentText.equals(NUMBERS_FOR_CHECKBUTTONS[2])) {
                     thirdCheckBox.setSelected(!thirdCheckBox.isSelected());
-                }
-                else {
+                } else {
                     displayErrorMessage("Wrong check box name!");
                 }
             }
