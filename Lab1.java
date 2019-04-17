@@ -3,7 +3,7 @@ import java.awt.event.ActionListener;
 import java.awt.Color;
 import javax.swing.*;
 import javax.swing.table.*;
-
+//JOOOOPA//
 /**
  * Labwork 1 for discipline "Designing programs in intelligent systems".
  *
